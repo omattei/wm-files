@@ -1,0 +1,50 @@
+# ------------------------------------------------------
+# file:     $HOME/.wmfstatus.sh
+# author:   Ramon Solis - http://cyb3rpunk.wordpress.com
+# author:   Richard Shaw <richs@archlinux.us>
+# modified: January 2011
+# vim:fenc=utf-8:nu:ai:si:et:ts=4:sw=4:ft=sh:
+# ------------------------------------------------------
+
+# -----
+# Paths
+# -----
+ICONPATH="$HOME/.wmfsicons/status/"
+
+# -------------
+# Defining VARS
+# -------------
+		DATE=$(date "+%H:%M")
+		SDA4=$(df -h /dev/sda4 | tail -1 | awk -F' ' '{print $4}')
+		SDB1=$(df -h /dev/sdb1 | tail -1 | awk -F' ' '{print $4}')
+		SDC1=$(df -h /dev/sdc1 | tail -1 | awk -F' ' '{print $4}')
+		MEM=$(free -t -m | grep '^Total:' | awk '{print $3}')
+		# CPU lines courtesy Procyon: https://bbs.archlinux.org/viewtopic.php?pid=661592
+		CPU0=$(eval $(awk '/^cpu0 /{print "previdle=" $5 "; prevtotal=" $2+$3+$4+$5 }' /proc/stat); 
+            sleep 0.4; 
+            eval $(awk '/^cpu0 /{print "idle=" $5 "; total=" $2+$3+$4+$5 }' /proc/stat); 
+            intervaltotal=$((total-${prevtotal:-0})); 
+            echo "$((100*( (intervaltotal) - ($idle-${previdle:-0}) ) / (intervaltotal) ))")
+		CPU1=$(eval $(awk '/^cpu1 /{print "previdle=" $5 "; prevtotal=" $2+$3+$4+$5 }' /proc/stat); 
+            sleep 0.4; 
+            eval $(awk '/^cpu1 /{print "idle=" $5 "; total=" $2+$3+$4+$5 }' /proc/stat); 
+            intervaltotal=$((total-${prevtotal:-0})); 
+            echo "$((100*( (intervaltotal) - ($idle-${previdle:-0}) ) / (intervaltotal) ))")
+
+# ---------
+# The print 
+# ---------
+wmfs -s "\i[962;3;0;0;$ICONPATH/cpu.png]\ 
+		$(wmfs-status-gauge 978 2 75 3 '#df0031' 1 '#333333' $CPU0) \
+		$(wmfs-status-gauge 978 8 75 3 '#df0031' 1 '#333333' $CPU1) \
+		\i[1059;3;0;0;$ICONPATH/mem.png]\ 
+		\s[1073;12;#DCDCDC;$MEM MB]\ 
+		\i[1118;3;0;0;$ICONPATH/hd.png]\ 
+		\s[1131;12;#DCDCDC;sda4:$SDA4]\ 
+		\i[1190;3;0;0;$ICONPATH/hd.png]\ 
+		\s[1202;12;#DCDCDC;sdb1: $SDB1]\ 
+		\i[1266;3;0;0;$ICONPATH/hd.png]\ 
+		\s[1279;12;#DCDCDC;sdc1: $SDC1]\ 
+		\i[1395;3;0;0;$ICONPATH/clock.png]\ 
+		\s[1408;12;#DCDCDC;$DATE]\ 
+        "
