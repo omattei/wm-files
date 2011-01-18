@@ -221,7 +221,7 @@
 
 			   [rule] instance = "firefox" 		class = "firefox" 		screen = 0     tag = "2"  max =  "true"  [/rule]
 			   [rule] instance = "opera" 		class = "opera" 		screen = 0     tag = "2"  max =  "true"  [/rule]
-			   [rule] instance = "firefox-nightlu" 		class = "firefox-nightly" 		screen = 0     tag = "2"  max =  "true"  [/rule]
+			   [rule] instance = "firefox-nightly" 		class = "firefox-nightly" 		screen = 0     tag = "2"  max =  "true"  [/rule]
 			   [rule] instance = "chromium-browser" 		class = "chromium-browser" 		screen = 0     tag = "2"  max =  "true"  [/rule]
 			   [rule] instance = "uzbl-tabbed" 	class = "uzbl-tabbed" 	screen = 0     tag = "2"  max =  "true"  [/rule]
 			   [rule] instance = "emesene" 		class = "emesene"	 	screen = 0     tag = "3"  max =  "false"  [/rule]
